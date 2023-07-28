@@ -26,6 +26,9 @@ try{
 	}
 	$load_avg_is_high = $load_avgs[1] > ($multiplier * $cpus);
 
+	$meminfo = \ek\getMemInfo();
+	$oom = ($meminfo['mem_available_ratio']<0.05 && $meminfo['mem_available']<64) || $meminfo['swap_free']==0;
+
 	// If the 5 minute load average is too high...
 	if($load_avg_is_high){
 		// If an email address is passed to this script as a command-line argument...
