@@ -1,16 +1,14 @@
 <?php
 
 try{
+	require('ek.php');
+
 	// Get the server's hostname
 	$hostname = gethostname();
 
 	// Get the number of CPUs the server has
-	preg_match_all(
-		'/^processor/m',
-		file_get_contents('/proc/cpuinfo'),
-		$matches
-	);
-	$cpus = count($matches[0]);
+	$cpus = \ek\getNumCPUs();
+	if($cpus<1) throw new Exception('\ek\getNumCPUs() returned a value less than 1', 500);
 
 	// Get the server's CPU load averages
 	$load_avgs = sys_getloadavg();
