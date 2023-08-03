@@ -3,6 +3,8 @@
 try{
 	require('ek.php');
 
+	$args = \ek\getCommandLineArgs();
+
 	// Get the server's hostname
 	$hostname = gethostname();
 
@@ -32,7 +34,7 @@ try{
 	// If the 5 minute load average is too high...
 	if($load_avg_is_high){
 		// If an email address is passed to this script as a command-line argument...
-		if( isset($argv[1]) ){
+		if( isset($args['email_to']) ){
 			// Format an email notification
 			$body = <<<HEREDOC
 Hello,
@@ -52,7 +54,7 @@ HEREDOC;
 			// Send the email notification
 			$headers = "MIME-Version: 1.0\r\nContent-type: text/html; charset=UTF-8\r\n";
 			mail(
-				$argv[1],
+				$args['email_to'],
 				"[URGENT] $hostname is being rebooted",
 				$body,
 				$headers
