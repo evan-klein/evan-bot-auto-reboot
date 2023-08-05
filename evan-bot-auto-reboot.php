@@ -28,6 +28,7 @@ try{
 	}
 	$load_avg_is_high = $load_avgs[1] > ($multiplier * $cpus);
 
+	// Determine if the server is running out of memory
 	$meminfo = \ek\getMemInfo();
 	$oom = ($meminfo['mem_available_ratio']<0.05 && $meminfo['mem_available']<64) || $meminfo['swap_free']==0;
 
@@ -55,6 +56,12 @@ Details:
 5 minute load average: {$load_avgs[1]}<br>
 15 minute load average: {$load_avgs[2]}<br>
 Number of processors: $cpus
+<br><br>
+mem_total: {$meminfo['mem_total']} MB<br>
+mem_available: {$meminfo['mem_available']} MB<br>
+mem_available_ratio: {$meminfo['mem_available_ratio']}<br>
+swap_free: {$meminfo['swap_free']} MB<br>
+swap_free_ratio: {$meminfo['swap_free_ratio']}
 <br><br>
 -🤖Evan Bot
 HEREDOC;
