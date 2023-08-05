@@ -31,15 +31,23 @@ try{
 	$meminfo = \ek\getMemInfo();
 	$oom = ($meminfo['mem_available_ratio']<0.05 && $meminfo['mem_available']<64) || $meminfo['swap_free']==0;
 
-	// If the 5 minute load average is too high...
-	if($load_avg_is_high){
+	// If the 5 minute load average is too high, or the server is running out of memory...
+	if(
+		$load_avg_is_high
+		||
+		$oom
+	){
 		// If an email address is passed to this script as a command-line argument...
 		if( isset($args['email_to']) ){
 			// Format an email notification
+			if($load_avg_is_high && $oom) $because = "of a high load average and it's running out of memory";
+			else if($load_avg_is_high) $because = "of a high load average";
+			else if($oom) $because = "it's running out of memory";
+			else $because = "?";
 			$body = <<<HEREDOC
 Hello,
 <br><br>
-$hostname is being rebooted because of a high load average.
+$hostname is being rebooted because $because.
 <br><br>
 Details:
 <br><br>
