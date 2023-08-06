@@ -4,6 +4,7 @@ try{
 	require('ek.php');
 
 	$args = \ek\getCommandLineArgs();
+	$test_mode = ($args['test_mode'] ?? 'false')=='true';
 
 	// Get the server's hostname
 	$hostname = gethostname();
@@ -45,7 +46,8 @@ try{
 			else if($load_avg_is_high) $because = "of a high load average";
 			else if($oom) $because = "it's running out of memory";
 			else $because = "?";
-			$body = <<<HEREDOC
+			$body = $test_mode ? '<strong>TEST MODE</strong><br><br>':'';
+			$body .= <<<HEREDOC
 Hello,
 <br><br>
 $hostname is being rebooted because $because.
@@ -70,7 +72,7 @@ HEREDOC;
 			$headers = "MIME-Version: 1.0\r\nContent-type: text/html; charset=UTF-8\r\n";
 			mail(
 				$args['email_to'],
-				"[URGENT] $hostname is being rebooted",
+				($test_mode ? '[TEST MODE]':'') . "[URGENT] $hostname is being rebooted",
 				$body,
 				$headers
 			);
