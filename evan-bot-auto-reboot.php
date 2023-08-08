@@ -31,7 +31,7 @@ try{
 
 	// Determine if the server is running out of memory
 	$meminfo = \ek\getMemInfo();
-	$oom = ($meminfo['mem_available_ratio']<0.05 && $meminfo['mem_available']<64) || $meminfo['swap_free']==0;
+	$oom = ($meminfo['mem_available_ratio']<0.05 && $meminfo['mem_available']<64) && $meminfo['swap_free']==0;
 
 	// If the 5 minute load average is too high, or the server is running out of memory...
 	if(
