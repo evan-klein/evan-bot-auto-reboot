@@ -2,6 +2,7 @@
 
 try{
 	require('ek.php');
+	use evan_klein\ek as ek;
 
 	$args = \ek\getCommandLineArgs();
 	$test_mode = ($args['test_mode'] ?? 'false')=='true';
