@@ -5,15 +5,15 @@ use evan_klein\ek as ek;
 try{
 	require('ek.php');
 
-	$args = \ek\getCommandLineArgs();
+	$args = ek\getCommandLineArgs();
 	$test_mode = ($args['test_mode'] ?? 'false')=='true';
 
 	// Get the server's hostname
 	$hostname = gethostname();
 
 	// Get the number of CPUs the server has
-	$cpus = \ek\getNumCPUs();
-	if($cpus<1) throw new Exception('\ek\getNumCPUs() returned a value less than 1', 500);
+	$cpus = ek\getNumCPUs();
+	if($cpus<1) throw new Exception('ek\getNumCPUs() returned a value less than 1', 500);
 
 	// Get the server's CPU load averages
 	$load_avgs = sys_getloadavg();
@@ -32,7 +32,7 @@ try{
 	$load_avg_is_high = $load_avgs[1] > ($multiplier * $cpus);
 
 	// Determine if the server is running out of memory
-	$meminfo = \ek\getMemInfo();
+	$meminfo = ek\getMemInfo();
 	$oom = ($meminfo['mem_available_ratio']<0.05 && $meminfo['mem_available']<64) && $meminfo['swap_free']==0;
 
 	// If the 5 minute load average is too high, or the server is running out of memory...
